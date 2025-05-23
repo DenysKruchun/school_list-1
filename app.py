@@ -11,14 +11,22 @@ app.config["SECRET_KEY"] = "reve ta stohne dnipr"
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
-from models import Student,Teacher,Subject
+from models import Teacher,Subject,ClassGroup,Lesson,Mark
 
 @app.route("/")  # Вказуємо url-адресу для виклику функції
 def index():
     teachers = Teacher.query.filter_by(full_name = "Ann").first()
     subject = Subject(name = "PE")
+    classgroup = ClassGroup()
+    lesson = Lesson()
+    mark = Mark()
     db.session.add(subject)
+    db.session.add(classgroup)
+    db.session.add(lesson)
+    db.session.add(mark)
+
     db.session.commit()
+
     return render_template("index.html",teachers = teachers)  # html-сторінка, що повертається у браузер
 
 

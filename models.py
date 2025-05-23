@@ -14,7 +14,7 @@ class Student(db.Model):
 
 class Teacher(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    full_name = db.Column(db.String(70), nullable=False)
+    full_name = db.Column(db.String(150), nullable=False)
     birth_day = db.Column(db.Date,nullable = False)
     email_adress = db.Column(db.String(100), nullable=False)
     phone_num = db.Column(db.String(20), nullable=False)
@@ -31,6 +31,48 @@ class Subject(db.Model):
 
     def __repr__(self):
         return f'Subject {self.name}'
+    
+class ClassGroup(db.Model):
+    id = db.Column(db.Integer,primary_key = True)
+    name = db.Column(db.String(50),nullable=False)
+    class_teacher = db.Column(db.String(150),db.ForeignKey("teacher.full_name"))
+    grade = db.Column(db.Integer,nullable = False)
+    students = db.Column(db.String(150),db.ForeignKey("student.full_name"))
+    main_student = db.Column(db.String(150),db.ForeignKey("student.id")) 
+    students_number = db.Column(db.Integer,nullable = False)
+    # timetable
+
+    def __repr__(self):
+        return f'Class {self.name}'
+    
+class Lesson(db.Model):
+    id = db.Column(db.Integer,primary_key = True)
+    name = db.Column(db.String(50),nullable=False)
+    hours_per_week = db.Column(db.Integer,nullable = False)
+    teacher = db.Column(db.String(150),db.ForeignKey("teacher/.full_name"))
+
+    def __repr__(self):
+        return f'Lesson {self.name}'
+    
+class Mark(db.Model):
+    id = db.Column(db.Integer,primary_key = True)
+
+    def __repr__(self):
+        return f'Lesson {self.id}'
+
+    
+
+    
+    
+    
+
+
+
+
+
+
+    
+
 
 
 # створити класи ClassGroup, Lesson(урок) Grade (оцінка), 
