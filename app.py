@@ -15,19 +15,39 @@ from models import Teacher,Subject,ClassGroup,Lesson,Mark
 
 @app.route("/")  # Вказуємо url-адресу для виклику функції
 def index():
-    teachers = Teacher.query.filter_by(full_name = "Ann").first()
-    subject = Subject(name = "PE")
-    classgroup = ClassGroup()
-    lesson = Lesson()
-    mark = Mark()
-    db.session.add(subject)
-    db.session.add(classgroup)
-    db.session.add(lesson)
-    db.session.add(mark)
+    teachers = Teacher.query.all()
+    # subject = Subject(name = "PE")
+    # classgroup = ClassGroup()
+    # lesson = Lesson()
+    # mark = Mark()
+    # db.session.add(subject)
+    # db.session.add(classgroup)
+    # db.session.add(lesson)
+    # db.session.add(mark)
 
-    db.session.commit()
+    # db.session.commit()
 
     return render_template("index.html",teachers = teachers)  # html-сторінка, що повертається у браузер
+
+
+
+@app.route("/add_teacher")  # Вказуємо url-адресу для виклику функції
+def add_teacher():
+    teacher = Teacher(full_name = "Ivan", birth_day = "1999/03/05",email_adress = "gvcvhg@gdhg",phone_num = "872646334",subject_id = 0)
+    db.session.add(teacher)
+    db.session.commit()
+
+    return render_template("index.html",teachers = teacher)  # html-сторінка, що повертається у браузер
+
+
+@app.route("/add_subject")  # Вказуємо url-адресу для виклику функції
+def add_subject():
+    subject = Subject(name = "IT")
+    db.session.add(subject)
+    db.session.commit()
+
+    return render_template("index.html",teachers = subject)  # html-сторінка, що повертається у браузер
+
 
 
 if __name__ == "__main__":
