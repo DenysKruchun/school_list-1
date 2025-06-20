@@ -14,7 +14,7 @@ class Teacher(db.Model):
 
 
 class Subject(db.Model):
-    
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     teachers = db.relationship("Teacher", backref="subject")
@@ -27,7 +27,7 @@ class ClassGroup(db.Model):
     __tablename__ = 'class_group'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
-    class_teacher = db.Column(db.String(150), db.ForeignKey("teacher.id"))
+    class_teacher_id = db.Column(db.Integer, db.ForeignKey("teacher.id"))
     grade = db.Column(db.Integer, nullable=False)
 
     students = db.relationship("Student", backref="classgroup")
@@ -44,7 +44,7 @@ class Student(db.Model):
     birth_day = db.Column(db.Date, nullable=False)
     created = db.Column(db.DateTime, default=db.func.now())
     class_group_id = db.Column(db.Integer, db.ForeignKey("class_group.id"))
-    is_starosta = db.Column(db.Boolean, default = False)
+    is_starosta = db.Column(db.Boolean, default=False)
 
     # classgroup = db.relationship("ClassGroup", backref="students")
 
@@ -54,12 +54,16 @@ class Student(db.Model):
 
 class Lesson(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    week_day = db.Column(db.String(20),nullable=False)
+    week_day = db.Column(db.String(20), nullable=False)
     number_lesson = db.Column(db.Integer)
 
     teacher_id = db.Column(db.Integer, db.ForeignKey("teacher.id"))
     subject_id = db.Column(db.Integer, db.ForeignKey("subject.id"))
     class_group_id = db.Column(db.Integer, db.ForeignKey("class_group.id"))
+    teacher = db.relationship("Teacher", backref="lessons", lazy=True)
+    subject = db.relationship("Subject", backref="lessons", lazy=True)
+    class_group = db.relationship("ClassGroup", backref="lessons", lazy=True)
+
 
     def __repr__(self):
         return f'Lesson {self.week_day}, {self.number_lesson}'
@@ -67,11 +71,16 @@ class Lesson(db.Model):
 
 class Mark(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    grade = db.Column(db.Integer,nullable=False) 
+    student_id = db.Column(db.Integer, db.ForeignKey("student.id"))
+    lesson_id = db.Column(db.Integer, db.ForeignKey("lesson.id"))
+    created = db.Column(db.DateTime, default=db.func.now())
+    comment = db.Column(db.String(100),nullable = True)
+
+    lesson = db.relationship("Lesson", backref="grades", lazy=True)
+    student = db.relationship("Student", backref="grades", lazy=True)
+
 
     def __repr__(self):
-        return f'Lesson {self.id}'
+        return f'Mark {self.id}'
 
-    
-
-
-# створити класи ClassGroup, Lesson(урок) Grade (оцінка),
