@@ -29,7 +29,7 @@ def index():
 
     return render_template("index.html",teachers = teachers)  # html-сторінка, що повертається у браузер
 
-
+    
 
 @app.route("/add_teacher")  # Вказуємо url-адресу для виклику функції
 def add_teacher():
